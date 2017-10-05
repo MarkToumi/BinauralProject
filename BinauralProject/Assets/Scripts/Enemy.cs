@@ -27,14 +27,21 @@ public class Enemy : MonoBehaviour {
 		get { return _life; }
 		set { _life = value; }
 	}
+
+	private float _speed;
+	private GameObject _pObj;
+	private PlayerController _pc;
 	// Use this for initialization
 	void Start () {
-		
+		_speed = 0.2f;
+		_pObj = GameObject.FindGameObjectWithTag("Player");
+		_pc = _pObj.GetComponent<PlayerController>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		transform.rotation = Quaternion.LookRotation(_pObj.transform.position - transform.position);
+		transform.position += transform.forward * _speed;
 	}
 	public void EnemyInit() {
 		switch(_eType) {
@@ -44,15 +51,15 @@ public class Enemy : MonoBehaviour {
 				break;
 			case EnemyType.Normal:
 				_crushingScore = 10;
-				_life = 3;
+				_life = 2;
 				break;
 			case EnemyType.Hard:
 				_crushingScore = 20;
-				_life = 5;
+				_life = 3;
 				 break;
 			case EnemyType.Boss:
 				_crushingScore = 50;
-				_life = 10;
+				_life = 5;
 				break;
 			default:
 				_crushingScore = 0;

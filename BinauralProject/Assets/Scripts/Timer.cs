@@ -30,7 +30,7 @@ public class Timer : MonoBehaviour {
 				_gc.GenerateBoss();
 				_isBorn = true;
 			}
-			if(_timeCount < 0) {
+			if(_timeCount <= 0) {
 				_timeCount = 0;
 				_gc.isPlay = false;
 			}

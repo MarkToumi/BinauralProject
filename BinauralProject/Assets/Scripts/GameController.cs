@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
-public delegate void CallBack();
+public delegate void onComplete();
 
 [System.Serializable]
 public enum Difficulty {
@@ -64,8 +65,9 @@ public class GameController : MonoBehaviour {
 			if(_eCount >= _eMax)
 				continue;
 			SetEnemyType();
-			yield return new WaitForSecondsRealtime(5f);
+			yield return new WaitForSecondsRealtime(7f);
 		}
+		yield break;
 	}
 
 	void SetEnemyType() {
@@ -81,7 +83,7 @@ public class GameController : MonoBehaviour {
 		_eCount++;
 	}
 	/*
-	public void GenerateBoss(CallBack callBack) {
+	public void GenerateBoss(onComplete callBack) {
 		_boss.gameObject.SetActive(true);
 		_boss.eType = (EnemyType)4;
 		_boss.EnemyInit();

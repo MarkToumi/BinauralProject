@@ -15,15 +15,12 @@ public class PlayerBullet : MonoBehaviour {
 	}
 	void Start () {
 		_gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-		_pc = transform.parent.gameObject.GetComponent<PlayerController>();
+		_pc = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
 		gameObject.SetActive(false);
 	}
 
 	IEnumerator BulletLost() {
 		yield return new WaitForSecondsRealtime(2);
-		_pc.bulletCount--;
-		if(_pc.bulletCount < 0)
-			_pc.bulletCount = 0;
 		this.gameObject.SetActive(false);
 	}
 
@@ -31,19 +28,15 @@ public class PlayerBullet : MonoBehaviour {
 	{
 		if(other.gameObject.tag == "Enemy") {
 			var enemy = other.gameObject.GetComponent<Enemy>();
+			enemy.life--;
 			if(enemy.life <= 0) {
 				_pc.score += enemy.crushingScore;
+				_pc.ScoreUpdate();
 				if(enemy.eType == EnemyType.Boss) {
 					_gc.isPlay = false;
 				}
 				other.gameObject.SetActive(false);
 			}
-			else {
-				enemy.life--;
-			}
-			_pc.bulletCount--;
-			if(_pc.bulletCount < 0)
-			_pc.bulletCount = 0;
 			this.gameObject.SetActive(false);
 		}
 	}
