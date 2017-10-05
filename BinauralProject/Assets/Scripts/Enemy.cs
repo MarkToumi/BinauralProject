@@ -30,12 +30,10 @@ public class Enemy : MonoBehaviour {
 
 	private float _speed;
 	private GameObject _pObj;
-	private PlayerController _pc;
 	// Use this for initialization
 	void Start () {
 		_speed = 0.2f;
 		_pObj = GameObject.FindGameObjectWithTag("Player");
-		_pc = _pObj.GetComponent<PlayerController>();
 	}
 	
 	// Update is called once per frame

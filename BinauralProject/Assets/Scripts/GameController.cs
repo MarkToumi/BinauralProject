@@ -79,7 +79,6 @@ public class GameController : MonoBehaviour {
 		else
 			_enemys[_eCount].eType = EnemyType.Hard;
 		_enemys[_eCount].EnemyInit();
-		Debug.Log(_enemys[_eCount].life);
 		_eCount++;
 	}
 	/*
