@@ -32,7 +32,7 @@ public class Enemy : MonoBehaviour {
 	private GameObject _pObj;
 	// Use this for initialization
 	void Start () {
-		_speed = 0.2f;
+		_speed = 0.1f;
 		_pObj = GameObject.FindGameObjectWithTag("Player");
 	}
 	

@@ -23,7 +23,7 @@ public class Timer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(_gc.isPlay) {
+		if(_gc.isPlay && _gc.state == PlayState.Play) {
 			_timeCount -= Time.deltaTime;
 			_timerView.text = _timeCount.ToString("f2");
 			if(!_isBorn && _timeCount <= 30f) {
@@ -33,6 +33,7 @@ public class Timer : MonoBehaviour {
 			if(_timeCount <= 0) {
 				_timeCount = 0;
 				_gc.isPlay = false;
+				_gc.state = PlayState.End;
 			}
 		}
 	}

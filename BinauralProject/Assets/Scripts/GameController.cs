@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -14,7 +16,20 @@ public enum Difficulty {
 	Extra
 }
 
+[System.Serializable]
+public enum PlayState {
+	Start = 0,
+	Play,
+	End
+}
+
 public class GameController : MonoBehaviour {
+	private PlayState _state;
+	public PlayState state {
+		get { return _state; }
+		set { _state = value; }
+	}
+
 	private bool _isPlay = true;
 	public bool isPlay {
 		get { return _isPlay; }
@@ -33,17 +48,23 @@ public class GameController : MonoBehaviour {
 	private PlayerController _pc;
 	private Difficulty _diffcult;
 	private int _diffNum;
+	[SerializeField]
+	private List<Button> _buttons = new List<Button>();
 	void Start() {
 		_pc = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+		_state = PlayState.Start;
 		_timer = GetComponent<Timer>();
 		_diffcult = Difficulty.Easy;
 		_diffNum = (int)_diffcult;
 		CreateEnemy();
-		StartCoroutine(GenerateEnemy());
 	}
 
 	// Update is called once per frame
 	void Update() {
+		if(_state == PlayState.End) {
+			if(Input.GetButtonDown("Fire1"))
+				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		}
 	}
 
 	void CreateEnemy() {
@@ -81,17 +102,34 @@ public class GameController : MonoBehaviour {
 		_enemys[_eCount].EnemyInit();
 		_eCount++;
 	}
-	/*
-	public void GenerateBoss(onComplete callBack) {
-		_boss.gameObject.SetActive(true);
-		_boss.eType = (EnemyType)4;
-		_boss.EnemyInit();
-		callBack();
-	}
-	*/
+	
 	public void GenerateBoss() {
 		_boss.gameObject.SetActive(true);
 		_boss.eType = EnemyType.Boss;
 		_boss.EnemyInit();
+	}
+
+	public void SelectDiffcult(int d) {
+		_diffcult = (Difficulty)d;
+		foreach(var b in _buttons)
+			b.gameObject.SetActive(false);
+		_state = PlayState.Play;
+		StartCoroutine(GenerateEnemy());
+	}
+}
+
+// 拡張クラス
+[System.Serializable]
+public static class EnumEx {
+	public static int Size(this WeaponType weapon) {
+		return System.Enum.GetValues(typeof(WeaponType)).Length;
+	}
+
+	public static int Size(this Difficulty diff) {
+		return System.Enum.GetValues(typeof(Difficulty)).Length;
+	}
+
+	public static int Size(this PlayState state) {
+		return System.Enum.GetValues(typeof(PlayState)).Length;
 	}
 }
