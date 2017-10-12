@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 
 [System.Serializable]
-public delegate void onComplete();
+public delegate void onComplete ();
 
 [System.Serializable]
 public enum Difficulty {
@@ -25,16 +25,19 @@ public enum PlayState {
 
 public class GameController : MonoBehaviour {
 	private PlayState _state;
+
 	public PlayState state {
 		get { return _state; }
 		set { _state = value; }
 	}
 
 	private bool _isPlay = true;
+
 	public bool isPlay {
 		get { return _isPlay; }
 		set { _isPlay = value; }
 	}
+
 	[SerializeField]
 	private Transform _eParent;
 	[SerializeField]
@@ -50,72 +53,72 @@ public class GameController : MonoBehaviour {
 	private int _diffNum;
 	[SerializeField]
 	private List<Button> _buttons = new List<Button>();
+
 	void Start() {
-		_pc = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+		_pc = GameObject.FindGameObjectWithTag ("Player").GetComponent<PlayerController> ();
 		_state = PlayState.Start;
-		_timer = GetComponent<Timer>();
+		_timer = GetComponent<Timer> ();
 		_diffcult = Difficulty.Easy;
 		_diffNum = (int)_diffcult;
-		CreateEnemy();
+		CreateEnemy ();
 	}
 
 	// Update is called once per frame
 	void Update() {
-		if(_state == PlayState.End) {
-			if(Input.GetButtonDown("Fire1"))
-				SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		if (_state == PlayState.End) {
+			if (Input.GetButtonDown ("Fire1"))
+				SceneManager.LoadScene (SceneManager.GetActiveScene ().name);
 		}
 	}
 
 	void CreateEnemy() {
-		for(int i = 0; i < _eMax; i++) {
-			var enemy = Instantiate(_eInstance, _eParent);
-			enemy.transform.rotation = Quaternion.Euler(0, 180, 0);
-			_enemys.Add(enemy.GetComponent<Enemy>());
-			enemy.SetActive(false);
+		for (int i = 0; i < _eMax; i++) {
+			var enemy = Instantiate (_eInstance, _eParent);
+			enemy.transform.rotation = Quaternion.Euler (0, 180, 0);
+			_enemys.Add (enemy.GetComponent<Enemy> ());
+			enemy.SetActive (false);
 		}
-		var boss = Instantiate(_eInstance, _eParent);
-		boss.transform.rotation = Quaternion.Euler(0, 180, 0);
-		_boss = boss.GetComponent<Enemy>();
-		boss.SetActive(false);
+		var boss = Instantiate (_eInstance, _eParent);
+		boss.transform.rotation = Quaternion.Euler (0, 180, 0);
+		_boss = boss.GetComponent<Enemy> ();
+		boss.SetActive (false);
 		_eCount = 0;
 	}
 
 	IEnumerator GenerateEnemy() {
-		while(_isPlay) {
-			if(_eCount >= _eMax)
+		while (_isPlay) {
+			if (_eCount >= _eMax)
 				continue;
-			SetEnemyType();
+			SetEnemyType ();
 			yield return new WaitForSecondsRealtime(7f);
-			Debug.Log("戻るよ");
 		}
 		yield break;
 	}
 
 	void SetEnemyType() {
-		_enemys[_eCount].gameObject.SetActive(true);
-		if(_diffcult != Difficulty.Extra) {
-			var rNum = Random.Range(0, _diffNum + 1);
-			_enemys[_eCount].eType = (EnemyType)rNum;
+		_enemys [_eCount].gameObject.SetActive (true);
+		if (_diffcult != Difficulty.Extra) {
+			var rNum = Random.Range (0, _diffNum + 1);
+			_enemys [_eCount].eType = (EnemyType)rNum;
 		}
 		else
-			_enemys[_eCount].eType = EnemyType.Hard;
-		_enemys[_eCount].EnemyInit();
+			_enemys [_eCount].eType = EnemyType.Hard;
+		_enemys [_eCount].EnemyInit ();
 		_eCount++;
 	}
-	
+
 	public void GenerateBoss() {
-		_boss.gameObject.SetActive(true);
+		_boss.gameObject.SetActive (true);
 		_boss.eType = EnemyType.Boss;
-		_boss.EnemyInit();
+		_boss.EnemyInit ();
 	}
 
 	public void SelectDiffcult(int d) {
 		_diffcult = (Difficulty)d;
-		foreach(var b in _buttons)
-			b.gameObject.SetActive(false);
+		foreach (var b in _buttons)
+			b.gameObject.SetActive (false);
 		_state = PlayState.Play;
-		StartCoroutine(GenerateEnemy());
+		StartCoroutine (GenerateEnemy ());
 	}
 }
 
@@ -123,14 +126,14 @@ public class GameController : MonoBehaviour {
 [System.Serializable]
 public static class EnumEx {
 	public static int Size(this WeaponType weapon) {
-		return System.Enum.GetValues(typeof(WeaponType)).Length;
+		return System.Enum.GetValues (typeof(WeaponType)).Length;
 	}
 
 	public static int Size(this Difficulty diff) {
-		return System.Enum.GetValues(typeof(Difficulty)).Length;
+		return System.Enum.GetValues (typeof(Difficulty)).Length;
 	}
 
 	public static int Size(this PlayState state) {
-		return System.Enum.GetValues(typeof(PlayState)).Length;
+		return System.Enum.GetValues (typeof(PlayState)).Length;
 	}
 }
