@@ -87,6 +87,7 @@ public class GameController : MonoBehaviour {
 				continue;
 			SetEnemyType();
 			yield return new WaitForSecondsRealtime(7f);
+			Debug.Log("戻るよ");
 		}
 		yield break;
 	}
