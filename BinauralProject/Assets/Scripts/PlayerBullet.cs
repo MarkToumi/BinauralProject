@@ -31,7 +31,6 @@ public class PlayerBullet : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision other) {
-		Debug.Log (_shotPower);
 		if (other.gameObject.tag == "Enemy") {
 			var enemy = other.gameObject.GetComponent<Enemy> ();
 			enemy.life -= _shotPower;
