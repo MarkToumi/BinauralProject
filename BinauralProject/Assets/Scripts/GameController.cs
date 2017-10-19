@@ -44,6 +44,8 @@ public class GameController : MonoBehaviour {
 	private GameObject _eInstance;
 	[SerializeField]
 	private int _eMax;
+	[SerializeField]
+	private float _radius;
 	private int _eCount;
 	private List<Enemy> _enemys = new List<Enemy>();
 	private Enemy _boss;
@@ -89,7 +91,8 @@ public class GameController : MonoBehaviour {
 		while (_isPlay) {
 			if (_eCount >= _eMax)
 				continue;
-			SetEnemyType ();
+			else
+				SetEnemyType ();
 			yield return new WaitForSecondsRealtime(7f);
 		}
 		yield break;
@@ -103,6 +106,11 @@ public class GameController : MonoBehaviour {
 		}
 		else
 			_enemys [_eCount].eType = EnemyType.Hard;
+		var rPos = (Random.Range(0.0f, 180.0f) - 90.0f) * Mathf.Deg2Rad;
+		var nowPos = transform.position;
+		nowPos.x += _radius * Mathf.Cos(rPos);
+		nowPos.z += _radius * Mathf.Sin(rPos);
+		_enemys[_eCount].gameObject.transform.position = nowPos;
 		_enemys [_eCount].EnemyInit ();
 		_eCount++;
 	}
